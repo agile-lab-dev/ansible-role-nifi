@@ -1,12 +1,12 @@
 ---
 - name: Prepare system
-  include: prepare.yml
+  import_tasks: prepare.yml
 
 - name: Install NiFi
-  include: install.yml
+  import_tasks: install.yml
 
 - name: Customize NiFi
-  include: customize.yml
+  import_tasks: customize.yml
 
 - name: Add NiFi as system service
-  include: systemd.yml
+  import_tasks: systemd.yml
