@@ -73,9 +73,9 @@
       notify: restart_nifi
   when: authorizers | length
 
-- name: Prepare Zookeeper
-  include: zookeeper.yml
-  when:
-    - nifi_properties['nifi.state.management.embedded.zookeeper.start'] is defined
-    - nifi_properties['nifi.state.management.embedded.zookeeper.start'] | bool
-  notify: restart_nifi
+# - name: Prepare Zookeeper
+#   include: zookeeper.yml
+#   when:
+#     - nifi_properties['nifi.state.management.embedded.zookeeper.start'] is defined
+#     - nifi_properties['nifi.state.management.embedded.zookeeper.start'] | bool
+#   notify: restart_nifi
