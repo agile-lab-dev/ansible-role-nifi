@@ -7,5 +7,5 @@
 - name: Enable NiFi service
   service:
     name: nifi
-    state: restarted
+    state: reloaded
     enabled: yes
