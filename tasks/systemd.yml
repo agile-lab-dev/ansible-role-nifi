@@ -8,5 +8,4 @@
   service:
     name: nifi
     state: restarted
-    daemon_reload: yes
     enabled: yes
