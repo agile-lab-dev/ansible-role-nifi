@@ -10,3 +10,4 @@
 
 # Other
 **/.cache/*
+.DS_Store
