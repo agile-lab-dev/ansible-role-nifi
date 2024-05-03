@@ -5,7 +5,8 @@
     dest: "/etc/systemd/system/nifi.service"
 
 - name: Enable NiFi service
-  service:
+  systemd:
     name: nifi
-    state: reloaded
+    state: restarted
     enabled: yes
+    daemon_reload: yes
