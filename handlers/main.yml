@@ -3,3 +3,4 @@
   service:
     name: nifi
     state: restarted
+    use: systemctl
