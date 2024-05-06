@@ -1,6 +1,7 @@
 ---
 - name: restart_nifi
-  service:
+  systemd:
     name: nifi
     state: restarted
-    use: systemctl
+    enabled: yes
+    daemon_reload: yes
