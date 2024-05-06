@@ -3,5 +3,4 @@
   systemd:
     name: nifi
     state: restarted
-    enabled: yes
     daemon_reload: yes
