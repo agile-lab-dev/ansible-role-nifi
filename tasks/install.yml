@@ -9,7 +9,7 @@
 
 - name: Get NiFi binary checksum
   uri:
-    url: https://archive.apache.org/dist/nifi/{{ nifi_version }}/nifi-{{ nifi_version }}-bin.zip.sha256
+    url: "{{ download_mirror_uri }}/nifi/{{ nifi_version }}/nifi-{{ nifi_version }}-bin.zip.sha256"
     return_content: true
   register: sha256_sum
   when: not zip_file.stat.exists and nifi_checksum_download
@@ -18,7 +18,7 @@
   get_url:
     url: "{{ download_mirror_uri }}/nifi/{{ nifi_version }}/nifi-{{ nifi_version }}-bin.zip"
     dest: "{{ nifi_config_dirs.binaries }}/nifi-{{ nifi_version }}-bin.zip"
-    checksum: "{{ 'sha256:' + sha256_sum.content if sha256_sum is defined else '' }}"
+    checksum: "{{ '' if sha256_sum is not defined else 'sha256:' + sha256_sum.content }}"
     timeout: 60
   when: not zip_file.stat.exists
 
