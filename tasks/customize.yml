@@ -1,4 +1,10 @@
 ---
+- name: Get NiFi UserID
+  become: true
+  become_user: "{{ nifi_user }}"
+  command: id -u
+  register: myuid_nifi
+
 - name: Update nifi.properties
   lineinfile:
     path: "{{ nifi_config_dirs.home }}/conf/nifi.properties"
