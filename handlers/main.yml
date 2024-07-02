@@ -1,13 +1,21 @@
 ---
+# - name: restart_nifi
+#   become: yes
+#   become_user: "{{ nifi_user }}"
+#   systemd:
+#     name: nifi
+#     state: restarted
+#     # scope: user
+#   # environment:
+#   #   XDG_RUNTIME_DIR: "/run/user/{{ myuid_nifi.stdout }}"
+#   tags:
+#   - root
+#   - no-root
+
 - name: restart_nifi
   become: yes
   become_user: "{{ nifi_user }}"
-  systemd:
-    name: nifi
-    state: restarted
-    # scope: user
-  # environment:
-  #   XDG_RUNTIME_DIR: "/run/user/{{ myuid_nifi.stdout }}"
+  command: sudo systemctl restart nifi
   tags:
   - root
   - no-root
