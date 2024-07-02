@@ -5,9 +5,9 @@
   systemd:
     name: nifi
     state: restarted
-    scope: user
-  environment:
-    XDG_RUNTIME_DIR: "/run/user/{{ myuid_nifi.stdout }}"
+    # scope: user
+  # environment:
+  #   XDG_RUNTIME_DIR: "/run/user/{{ myuid_nifi.stdout }}"
   tags:
   - root
   - no-root
