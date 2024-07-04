@@ -10,15 +10,3 @@
     state: restarted
     enabled: yes
     daemon_reload: yes
-
-# Required when attempting to restart_nifi not as root
-# - name: Fix permissions for nifi_restart # Make sure its safe
-#   become: yes
-#   file:
-#     path: "/var/log/journal"
-#     state: directory
-#     owner: "{{ nifi_user }}"
-#     group: "{{ nifi_group }}"
-#     recurse: "yes"
-#   tags:
-#   - root
