@@ -51,20 +51,20 @@
   - root
   - no-root
 
-- name: Fix permissions # This may be unnecessary because we are already downloading nifi as the nifi_user
-  become: yes
-  file:
-    path: "{{ nifi_config_dirs.install }}/nifi-{{ nifi_version }}"
-    owner: "{{ nifi_user }}"
-    group: "{{ nifi_group }}"
-    recurse: "yes"
-  tags:
-  - root 
+# - name: Fix permissions # This may be unnecessary because we are already downloading nifi as the nifi_user
+#   become: yes
+#   file:
+#     path: "{{ nifi_config_dirs.install }}/nifi-{{ nifi_version }}"
+#     owner: "{{ nifi_user }}"
+#     group: "{{ nifi_group }}"
+#     recurse: "yes"
+#   tags:
+#   - root 
 
 - name: Fix permissions for lineinfile
   become: yes
   file:
-    path: "/tmp"
+    path: "/tmp/.ansible"
     state: directory
     owner: "{{ nifi_user }}"
     group: "{{ nifi_group }}"
