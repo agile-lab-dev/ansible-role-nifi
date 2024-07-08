@@ -1,28 +1,45 @@
 ---
 - name: Check if NiFi binary exists
+  become: yes
+  become_user: "{{ nifi_user }}"
   stat:
     path: "{{ nifi_config_dirs.binaries }}/nifi-{{ nifi_version }}-bin.zip"
     get_attributes: no
     get_checksum: no
     get_mime: no
   register: zip_file
+  tags:
+  - root
+  - no-root
 
 - name: Get NiFi binary checksum
+  become: yes
+  become_user: "{{ nifi_user }}"
   uri:
     url: "{{ download_mirror_uri }}/nifi/{{ nifi_version }}/nifi-{{ nifi_version }}-bin.zip.sha256"
     return_content: true
   register: sha256_sum
   when: not zip_file.stat.exists and nifi_checksum_download
+  tags:
+  - root
+  - no-root
 
 - name: Download NiFi binary
+  become: yes
+  become_user: "{{ nifi_user }}"
   get_url:
     url: "{{ download_mirror_uri }}/nifi/{{ nifi_version }}/nifi-{{ nifi_version }}-bin.zip"
     dest: "{{ nifi_config_dirs.binaries }}/nifi-{{ nifi_version }}-bin.zip"
     checksum: "{{ '' if sha256_sum is not defined else 'sha256:' + sha256_sum.content }}"
     timeout: 60
   when: not zip_file.stat.exists
+  tags:
+  - root
+  - no-root
 
 - name: Unpack NiFi binary
+  become: yes
+  become_user: "{{ nifi_user }}"
   unarchive:
     remote_src: "yes"
     src: "{{ nifi_config_dirs.binaries }}/nifi-{{ nifi_version }}-bin.zip"
@@ -30,15 +47,24 @@
     owner: "{{ nifi_user }}"
     group: "{{ nifi_group }}"
     creates: "{{ nifi_config_dirs.install }}/nifi-{{ nifi_version }}"
+  tags:
+  - root
+  - no-root
 
-- name: Fix permissions
+- name: Fix permissions for lineinfile
+  become: yes
   file:
-    path: "{{ nifi_config_dirs.install }}/nifi-{{ nifi_version }}"
+    path: "/tmp/.ansible"
+    state: directory
     owner: "{{ nifi_user }}"
     group: "{{ nifi_group }}"
     recurse: "yes"
+  tags:
+  - root
 
 - name: Create NiFi symlink
+  become: yes
+  become_user: "{{ nifi_user }}"
   file:
     src: "nifi-{{ nifi_version }}"
     path: "{{ nifi_config_dirs.home }}"
@@ -47,3 +73,6 @@
     group: "{{ nifi_group }}"
     follow: no
     force: yes
+  tags:
+  - root
+  - no-root
