@@ -55,14 +55,13 @@ login_identity_providers:
 state_management:
   /stateManagement/local-provider/property[@name="Directory"]: "{{ nifi_config_dirs.external_config }}/state/local"
 
-# Specify how many userGroupProviders are used authorizers.xml.
-authorizers_user_group_providers: 0
 
 # Specify any property from authorizers.xml here.
 # Use XPath expressions as keys.
 authorizers:
-  /authorizers/authorizer/identifier: single-user-authorizer
-  /authorizers/authorizer/class: org.apache.nifi.authorization.single.user.SingleUserAuthorizer
+  authorizer:
+    /authorizers/authorizer/identifier: single-user-authorizer
+    /authorizers/authorizer/class: org.apache.nifi.authorization.single.user.SingleUserAuthorizer
 
 # The following zookeeper properties are only used if
 # nifi_properties.nifi.state.management.embedded.zookeeper.start == true
