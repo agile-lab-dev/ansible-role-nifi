@@ -97,10 +97,11 @@ Basic 3 node NiFi cluster using embedded Zookeeper:
     login_identity_providers:
       /loginIdentityProviders/provider/identifier: single-user-provider
       /loginIdentityProviders/provider/class: org.apache.nifi.authentication.single.user.SingleUserLoginIdentityProvider
-    authorizers_user_group_providers: 0
+
     authorizers:
-      /authorizers/authorizer/identifier: single-user-authorizer
-      /authorizers/authorizer/class: org.apache.nifi.authorization.single.user.SingleUserAuthorizer
+      authorizer:
+        /authorizers/authorizer/identifier: single-user-authorizer
+        /authorizers/authorizer/class: org.apache.nifi.authorization.single.user.SingleUserAuthorizer
     state_management:
       /stateManagement/cluster-provider/property[@name="Connect String"]: "{{ nifi_properties['nifi.zookeeper.connect.string'] }}"
     # Assuming nifi_server1 = 192.168.1.10, nifi_server2 = 192.168.1.11, nifi_server3 = 192.168.1.12
@@ -148,20 +149,25 @@ Secure single node NiFi instance with LDAP:
       /loginIdentityProviders/provider/property[@name="User Search Filter"]: sAMAccountName={0}
       /loginIdentityProviders/provider/property[@name="Identity Strategy"]: USE_DN
       /loginIdentityProviders/provider/property[@name="Authentication Expiration"]: 12 hours
-    authorizers_user_group_providers: 1
+
     authorizers:
-      /authorizers/userGroupProvider[1]/identifier: file-user-group-provider
-      /authorizers/userGroupProvider[1]/class: org.apache.nifi.authorization.FileUserGroupProvider
-      /authorizers/userGroupProvider[1]/property[@name="Users File"]: "{{ nifi_config_dirs.external_config }}/users.xml"
-      /authorizers/userGroupProvider[1]/property[@name="Initial User Identity 1"]: cn=John Smith,ou=people,dc=example,dc=com
-      /authorizers/accessPolicyProvider/identifier: file-access-policy-provider
-      /authorizers/accessPolicyProvider/class: org.apache.nifi.authorization.FileAccessPolicyProvider
-      /authorizers/accessPolicyProvider/property[@name="User Group Provider"]: file-user-group-provider
-      /authorizers/accessPolicyProvider/property[@name="Authorizations File"]: "{{ nifi_config_dirs.external_config }}/authorizations.xml"
-      /authorizers/accessPolicyProvider/property[@name="Initial Admin Identity"]: cn=John Smith,ou=people,dc=example,dc=com
-      /authorizers/authorizer/identifier: managed-authorizer
-      /authorizers/authorizer/class: org.apache.nifi.authorization.StandardManagedAuthorizer
-      /authorizers/authorizer/property[@name="Access Policy Provider"]: file-access-policy-provider
+      userGroupProviders:
+        /authorizers/userGroupProvider/identifier: file-user-group-provider
+        /authorizers/userGroupProvider/class: org.apache.nifi.authorization.FileUserGroupProvider
+        /authorizers/userGroupProvider/property[@name="Users File"]: "{{ nifi_config_dirs.external_config }}/users.xml"
+        /authorizers/userGroupProvider/property[@name="Initial User Identity 1"]: cn=John Smith,ou=people,dc=example,dc=com
+
+      accessPolicyProviders:
+        /authorizers/accessPolicyProvider/identifier: file-access-policy-provider
+        /authorizers/accessPolicyProvider/class: org.apache.nifi.authorization.FileAccessPolicyProvider
+        /authorizers/accessPolicyProvider/property[@name="User Group Provider"]: file-user-group-provider
+        /authorizers/accessPolicyProvider/property[@name="Authorizations File"]: "{{ nifi_config_dirs.  external_config }}/authorizations.xml"
+        /authorizers/accessPolicyProvider/property[@name="Initial Admin Identity"]: cn=John Smith,ou=people,dc=example,dc=com
+      
+      authorizer:
+        /authorizers/authorizer/identifier: managed-authorizer
+        /authorizers/authorizer/class: org.apache.nifi.authorization.StandardManagedAuthorizer
+        /authorizers/authorizer/property[@name="Access Policy Provider"]: file-access-policy-provider
 ```
 
 Secure 3 node NiFi cluster with LDAP using embedded zookeeper:
@@ -208,27 +214,33 @@ Secure 3 node NiFi cluster with LDAP using embedded zookeeper:
       /loginIdentityProviders/provider/property[@name="User Search Filter"]: sAMAccountName={0}
       /loginIdentityProviders/provider/property[@name="Identity Strategy"]: USE_DN
       /loginIdentityProviders/provider/property[@name="Authentication Expiration"]: 12 hours
-    authorizers_user_group_providers: 1
+
     authorizers:
-      /authorizers/userGroupProvider[1]/identifier: file-user-group-provider
-      /authorizers/userGroupProvider[1]/class: org.apache.nifi.authorization.FileUserGroupProvider
-      /authorizers/userGroupProvider[1]/property[@name="Users File"]: "{{ nifi_config_dirs.external_config }}/users.xml"
-      /authorizers/userGroupProvider[1]/property[@name="Initial User Identity 1"]: cn=John Smith,ou=people,dc=example,dc=com
-      # Use the full DN of the node certificates here
-      /authorizers/userGroupProvider[1]/property[@name="Initial User Identity 2"]: CN=nifi_server1.example.com, O=ExampleLLC, L=Saint Louis, ST=Missouri, C=US
-      /authorizers/userGroupProvider[1]/property[@name="Initial User Identity 3"]: CN=nifi_server2.example.com, O=ExampleLLC, L=Saint Louis, ST=Missouri, C=US
-      /authorizers/userGroupProvider[1]/property[@name="Initial User Identity 4"]: CN=nifi_server3.example.com, O=ExampleLLC, L=Saint Louis, ST=Missouri, C=US
-      /authorizers/accessPolicyProvider/identifier: file-access-policy-provider
-      /authorizers/accessPolicyProvider/class: org.apache.nifi.authorization.FileAccessPolicyProvider
-      /authorizers/accessPolicyProvider/property[@name="User Group Provider"]: file-user-group-provider
-      /authorizers/accessPolicyProvider/property[@name="Authorizations File"]: "{{ nifi_config_dirs.external_config }}/authorizations.xml"
-      /authorizers/accessPolicyProvider/property[@name="Initial Admin Identity"]: cn=John Smith,ou=people,dc=example,dc=com
-      /authorizers/accessPolicyProvider/property[@name="Node Identity 1"]: CN=nifi_server1.example.com, O=ExampleLLC, L=Saint Louis, ST=Missouri, C=US
-      /authorizers/accessPolicyProvider/property[@name="Node Identity 2"]: CN=nifi_server2.example.com, O=ExampleLLC, L=Saint Louis, ST=Missouri, C=US
-      /authorizers/accessPolicyProvider/property[@name="Node Identity 3"]: CN=nifi_server3.example.com, O=ExampleLLC, L=Saint Louis, ST=Missouri, C=US
-      /authorizers/authorizer/identifier: managed-authorizer
-      /authorizers/authorizer/class: org.apache.nifi.authorization.StandardManagedAuthorizer
-      /authorizers/authorizer/property[@name="Access Policy Provider"]: file-access-policy-provider
+      userGroupProviders:
+        /authorizers/userGroupProvider/identifier: file-user-group-provider
+        /authorizers/userGroupProvider/class: org.apache.nifi.authorization.FileUserGroupProvider
+        /authorizers/userGroupProvider/property[@name="Users File"]: "{{ nifi_config_dirs.external_config }}/users.xml"
+        /authorizers/userGroupProvider/property[@name="Initial User Identity 1"]: cn=John Smith,ou=people,dc=example,dc=com
+        # Use the full DN of the node certificates here
+        /authorizers/userGroupProvider/property[@name="Initial User Identity 2"]: CN=nifi_server1.example.com, O=ExampleLLC, L=Saint Louis, ST=Missouri, C=US
+        /authorizers/userGroupProvider/property[@name="Initial User Identity 3"]: CN=nifi_server2.example.com, O=ExampleLLC, L=Saint Louis, ST=Missouri, C=US
+        /authorizers/userGroupProvider/property[@name="Initial User Identity 4"]: CN=nifi_server3.example.com, O=ExampleLLC, L=Saint Louis, ST=Missouri, C=US
+      
+      accessPolicyProviders:
+        /authorizers/accessPolicyProvider/identifier: file-access-policy-provider
+        /authorizers/accessPolicyProvider/class: org.apache.nifi.authorization.FileAccessPolicyProvider
+        /authorizers/accessPolicyProvider/property[@name="User Group Provider"]: file-user-group-provider
+        /authorizers/accessPolicyProvider/property[@name="Authorizations File"]: "{{ nifi_config_dirs.external_config }}/authorizations.xml"
+        /authorizers/accessPolicyProvider/property[@name="Initial Admin Identity"]: cn=John Smith,ou=people, dc=example,dc=com
+        /authorizers/accessPolicyProvider/property[@name="Node Identity 1"]: CN=nifi_server1.example.com, O=ExampleLLC, L=Saint Louis, ST=Missouri, C=US
+        /authorizers/accessPolicyProvider/property[@name="Node Identity 2"]: CN=nifi_server2.example.com, O=ExampleLLC, L=Saint Louis, ST=Missouri, C=US
+        /authorizers/accessPolicyProvider/property[@name="Node Identity 3"]: CN=nifi_server3.example.com, O=ExampleLLC, L=Saint Louis, ST=Missouri, C=US
+
+      authorizer:
+        /authorizers/authorizer/identifier: managed-authorizer
+        /authorizers/authorizer/class: org.apache.nifi.authorization.StandardManagedAuthorizer
+        /authorizers/authorizer/property[@name="Access Policy Provider"]: file-access-policy-provider
+
     state_management:
       /stateManagement/cluster-provider/property[@name="Connect String"]: "{{ nifi_properties['nifi.zookeeper.connect.string'] }}"
     # Assuming nifi_server1 = 192.168.1.10, nifi_server2 = 192.168.1.11, nifi_server3 = 192.168.1.12
