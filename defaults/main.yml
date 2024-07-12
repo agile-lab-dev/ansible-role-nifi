@@ -59,6 +59,8 @@ state_management:
 # Specify any property from authorizers.xml here.
 # Use XPath expressions as keys.
 authorizers:
+  userGroupProviders: {}
+  accessPolicyProviders: {}
   authorizer:
     /authorizers/authorizer/identifier: single-user-authorizer
     /authorizers/authorizer/class: org.apache.nifi.authorization.single.user.SingleUserAuthorizer
