@@ -106,6 +106,7 @@
   vars:
     keytab_path: "{{ nifi_properties['nifi.kerberos.keytab.location'] }}"
     principal_name: "nifi/{{ inventory_hostname }}@CORP.OPENFIBER.IT"
+  when: nifi_zookeeper_cluster
 
 - name: Prepare Zookeeper
   include: zookeeper.yml
