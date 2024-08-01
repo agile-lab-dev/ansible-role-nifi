@@ -90,6 +90,24 @@
   notify: restart_nifi
   when: authorizers | length
 
+
+- name: Update zookeeper-jaas.conf
+  blockinfile:
+    path: "{{ nifi_config_dirs.home }}/conf/zookeeper-jaas.conf"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      Client {
+        com.sun.security.auth.module.Krb5LoginModule required
+        useKeyTab=true
+        keyTab="{{ keytab_path }}"
+        storeKey=true
+        useTicketCache=false
+        principal="{{ kerberos_principal }}";
+      };
+  vars:
+    keytab_path: "{{ nifi_properties['nifi.kerberos.keytab.location'] }}"
+    principal_name: "nifi/{{ inventory_hostname }}@CORP.OPENFIBER.IT"
+
 - name: Prepare Zookeeper
   include: zookeeper.yml
   when:
