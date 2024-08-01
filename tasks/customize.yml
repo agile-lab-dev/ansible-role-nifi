@@ -102,7 +102,7 @@
         keyTab="{{ keytab_path }}"
         storeKey=true
         useTicketCache=false
-        principal="{{ kerberos_principal }}";
+        principal="{{ principal_name }}";
       };
   vars:
     keytab_path: "{{ nifi_properties['nifi.kerberos.keytab.location'] }}"
