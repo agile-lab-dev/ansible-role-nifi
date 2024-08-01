@@ -91,11 +91,10 @@
   when: authorizers | length
 
 
-- name: Update zookeeper-jaas.conf
-  blockinfile:
-    path: "{{ nifi_config_dirs.home }}/conf/zookeeper-jaas.conf"
-    marker: "# {mark} ANSIBLE MANAGED BLOCK"
-    block: |
+- name: Create zookeeper-jaas.conf
+  copy:
+    dest: "{{ nifi_config_dirs.home }}/conf/zookeeper-jaas.conf"
+    content: |
       Client {
         com.sun.security.auth.module.Krb5LoginModule required
         useKeyTab=true
