@@ -98,14 +98,11 @@
       Client {
         com.sun.security.auth.module.Krb5LoginModule required
         useKeyTab=true
-        keyTab="{{ keytab_path }}"
+        keyTab="{{ nifi_properties['nifi.kerberos.keytab.location'] }}"
         storeKey=true
         useTicketCache=false
-        principal="{{ principal_name }}";
+        principal="{{ nifi_kerberos_principal }}";
       };
-  vars:
-    keytab_path: "{{ nifi_properties['nifi.kerberos.keytab.location'] }}"
-    principal_name: "nifi/{{ inventory_hostname }}@CORP.OPENFIBER.IT"
   when: nifi_zookeeper_cluster
 
 - name: Prepare Zookeeper
