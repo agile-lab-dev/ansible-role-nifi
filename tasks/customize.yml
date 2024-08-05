@@ -90,6 +90,21 @@
   notify: restart_nifi
   when: authorizers | length
 
+
+- name: Create zookeeper-jaas.conf
+  copy:
+    dest: "{{ nifi_config_dirs.home }}/conf/zookeeper-jaas.conf"
+    content: |
+      Client {
+        com.sun.security.auth.module.Krb5LoginModule required
+        useKeyTab=true
+        keyTab="{{ nifi_properties['nifi.kerberos.keytab.location'] }}"
+        storeKey=true
+        useTicketCache=false
+        principal="{{ nifi_kerberos_principal }}";
+      };
+  when: nifi_zookeeper_cluster
+
 - name: Prepare Zookeeper
   include: zookeeper.yml
   when:
