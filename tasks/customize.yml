@@ -98,7 +98,7 @@
       Client {
         com.sun.security.auth.module.Krb5LoginModule required
         useKeyTab=true
-        keyTab="{{ nifi_properties['nifi.kerberos.keytab.location'] }}"
+        keyTab="{{ nifi_properties['nifi.kerberos.service.keytab.location'] }}"
         storeKey=true
         useTicketCache=false
         principal="{{ nifi_kerberos_principal }}";
