@@ -106,7 +106,7 @@
   when: nifi_zookeeper_cluster
 
 - name: Prepare Zookeeper
-  include: zookeeper.yml
+  import_tasks: zookeeper.yml
   when:
     - nifi_properties['nifi.state.management.embedded.zookeeper.start'] is defined
     - nifi_properties['nifi.state.management.embedded.zookeeper.start'] | bool
